@@ -1,0 +1,143 @@
+openapi: 3.1.0
+x-stoplight:
+  id: si8727x0yagwd
+info:
+  title: todo
+  version: '1.0'
+servers:
+  - url: 'http://localhost:3000'
+    description: ''
+paths:
+  /tasks:
+    get:
+      summary: Fetch All Task
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  tasks:
+                    type: array
+                    x-stoplight:
+                      id: g0116iky5qsnt
+                    items:
+                      $ref: '#/components/schemas/Task'
+                      x-stoplight:
+                        id: 5k8tsydsgrvu3
+                required:
+                  - tasks
+              examples:
+                Example 2:
+                  value:
+                    tasks:
+                      - id: 1
+                        title: string
+                        description: string
+                        createdAt: string
+                Example 1:
+                  value:
+                    tasks:
+                      - id: 1
+                        title: string
+                        description: string
+                        createdAt: string
+      operationId: get-tasks
+      x-stoplight:
+        id: 0bt9ur2ymgauv
+      description: タスク一覧取得
+      parameters:
+        - schema:
+            type: string
+          in: header
+  /tasks/create:
+    post:
+      summary: Create New Task
+      operationId: post-tasks-create
+      responses:
+        '200':
+          description: OK
+      x-stoplight:
+        id: lvrbpyi1w81ks
+      description: タスク作成
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Task'
+            examples:
+              Example 1:
+                value:
+                  id: 1
+                  title: string
+                  description: string
+                  createdAt: string
+components:
+  schemas:
+    User:
+      title: User
+      type: object
+      examples:
+        - id: 142
+          firstName: Alice
+          lastName: Smith
+          email: alice.smith@gmail.com
+          dateOfBirth: '1997-10-31'
+          emailVerified: true
+          signUpDate: '2019-08-24'
+      x-stoplight:
+        id: zdyq3ng5ubhtg
+      properties:
+        id:
+          type: integer
+          description: Unique identifier for the given user.
+          x-stoplight:
+            id: qup1944jwc2vi
+        email:
+          type: string
+          format: email
+          x-stoplight:
+            id: 6mn0i0fqq2vmt
+        name:
+          type: string
+          x-stoplight:
+            id: 64q62m8llf8oe
+        createAt:
+          type: string
+          format: date
+          description: The date that the user was created.
+          x-stoplight:
+            id: tx7rw2owm6zop
+      required:
+        - id
+        - email
+    Task:
+      title: Task
+      x-stoplight:
+        id: dzbf9fimrj81y
+      type: object
+      properties:
+        id:
+          type: integer
+          x-stoplight:
+            id: 79aqemgfilxla
+          minimum: 1
+        title:
+          type: string
+          x-stoplight:
+            id: nze2bknkafb5d
+        description:
+          type: string
+          x-stoplight:
+            id: 88y8nsuf2258s
+        createdAt:
+          type: string
+          x-stoplight:
+            id: pij0w3kgrdakn
+      required:
+        - id
+  examples: {}
+  securitySchemes: {}
