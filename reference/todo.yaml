@@ -25,26 +25,42 @@ paths:
                     x-stoplight:
                       id: g0116iky5qsnt
                     items:
-                      $ref: '#/components/schemas/Task'
                       x-stoplight:
                         id: 5k8tsydsgrvu3
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                          x-stoplight:
+                            id: 5po9u7hq5nhbs
+                          minimum: 1
+                        title:
+                          type: string
+                          x-stoplight:
+                            id: ve4r8alnx2mdz
+                        createdAt:
+                          type: string
+                          x-stoplight:
+                            id: 6y5ksocnydwlp
+                      required:
+                        - id
+                        - title
+                        - createdAt
                 required:
                   - tasks
               examples:
-                Example 2:
-                  value:
-                    tasks:
-                      - id: 1
-                        title: string
-                        description: string
-                        createdAt: string
                 Example 1:
                   value:
                     tasks:
                       - id: 1
                         title: string
-                        description: string
                         createdAt: string
+        '400':
+          $ref: '#/components/responses/400_bad_request'
+        '401':
+          $ref: '#/components/responses/401_unauthorized'
+        '500':
+          $ref: '#/components/responses/500_internal_server_error'
       operationId: get-tasks
       x-stoplight:
         id: 0bt9ur2ymgauv
@@ -60,6 +76,12 @@ paths:
       responses:
         '200':
           description: OK
+        '400':
+          $ref: '#/components/responses/400_bad_request'
+        '401':
+          $ref: '#/components/responses/401_unauthorized'
+        '500':
+          $ref: '#/components/responses/500_internal_server_error'
       x-stoplight:
         id: lvrbpyi1w81ks
       description: タスク作成
@@ -67,7 +89,18 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Task'
+              type: object
+              properties:
+                title:
+                  type: string
+                  x-stoplight:
+                    id: js8pdlvzvpp5n
+                description:
+                  type: string
+                  x-stoplight:
+                    id: dk0vqj9f01mw2
+              required:
+                - title
             examples:
               Example 1:
                 value:
@@ -75,45 +108,100 @@ paths:
                   title: string
                   description: string
                   createdAt: string
+  '/tasks/{taskId}':
+    parameters:
+      - schema:
+          type: string
+        name: taskId
+        in: path
+        required: true
+    get:
+      summary: Fetch Task by Id
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Task'
+              examples:
+                Example 1:
+                  value:
+                    id: 1
+                    title: string
+                    description: string
+                    createdAt: string
+        '400':
+          $ref: '#/components/responses/400_bad_request'
+        '401':
+          $ref: '#/components/responses/401_unauthorized'
+        '500':
+          $ref: '#/components/responses/500_internal_server_error'
+      operationId: get-tasks-taskId
+      x-stoplight:
+        id: 5h8l4e754qnlw
+      description: タスク取得
+  '/tasks/{taskId}/edit':
+    parameters:
+      - schema:
+          type: string
+        name: taskId
+        in: path
+        required: true
+    put:
+      summary: Edit Task
+      operationId: put-tasks-taskId-edit
+      responses:
+        '200':
+          description: OK
+        '400':
+          $ref: '#/components/responses/400_bad_request'
+        '401':
+          $ref: '#/components/responses/401_unauthorized'
+        '500':
+          $ref: '#/components/responses/500_internal_server_error'
+      x-stoplight:
+        id: uuaif0svqklln
+      description: タスク編集
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                  x-stoplight:
+                    id: v83o600440cx3
+                description:
+                  type: string
+                  x-stoplight:
+                    id: sbo571mxaw5dh
+  '/tasks/{taskId}/delete':
+    parameters:
+      - schema:
+          type: string
+        name: taskId
+        in: path
+        required: true
+    delete:
+      summary: Delete Task
+      operationId: delete-tasks-taskId-delete
+      responses:
+        '200':
+          description: OK
+        '400':
+          $ref: '#/components/responses/400_bad_request'
+        '401':
+          $ref: '#/components/responses/401_unauthorized'
+        '500':
+          $ref: '#/components/responses/500_internal_server_error'
+      x-stoplight:
+        id: qdkpo20m31i6w
+      description: タスク削除
 components:
   schemas:
-    User:
-      title: User
-      type: object
-      examples:
-        - id: 142
-          firstName: Alice
-          lastName: Smith
-          email: alice.smith@gmail.com
-          dateOfBirth: '1997-10-31'
-          emailVerified: true
-          signUpDate: '2019-08-24'
-      x-stoplight:
-        id: zdyq3ng5ubhtg
-      properties:
-        id:
-          type: integer
-          description: Unique identifier for the given user.
-          x-stoplight:
-            id: qup1944jwc2vi
-        email:
-          type: string
-          format: email
-          x-stoplight:
-            id: 6mn0i0fqq2vmt
-        name:
-          type: string
-          x-stoplight:
-            id: 64q62m8llf8oe
-        createAt:
-          type: string
-          format: date
-          description: The date that the user was created.
-          x-stoplight:
-            id: tx7rw2owm6zop
-      required:
-        - id
-        - email
     Task:
       title: Task
       x-stoplight:
@@ -139,5 +227,39 @@ components:
             id: pij0w3kgrdakn
       required:
         - id
+    Error:
+      title: Error
+      x-stoplight:
+        id: 7jvbdv385542p
+      type: object
+      description: error model
+      properties:
+        code:
+          x-stoplight:
+            id: jbxoejwt90ide
+          type: integer
+        message:
+          type: string
+          x-stoplight:
+            id: fcpvtoy9w211v
   examples: {}
   securitySchemes: {}
+  responses:
+    400_bad_request:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    401_unauthorized:
+      description: unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    500_internal_server_error:
+      description: Internel Server Error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
